@@ -91,6 +91,36 @@ func count_mins() {
   fmt.Println(sum)
 }
 
+func digital_root() {
+  var n, sum uint
+  fmt.Scan(&n)
+  for n > 9 {
+    sum = 0
+    for n > 0 {
+      sum += n % 10
+      n /= 10
+    }
+    n = sum
+  }
+  fmt.Println(n)
+}
+
+func largest_by_7() {
+  var a, b, res int
+  fmt.Scan(&a, &b)
+  for i := b; i >= a - 1; i-- {
+    if i % 7 == 0 {
+      res = i
+      break
+    }
+  }
+  if res < a {
+    fmt.Println("NO")
+  } else {
+    fmt.Println(res)
+  }
+}
+
 func main() {
   // sum_of_digits()
   // revers_num()
@@ -99,5 +129,7 @@ func main() {
   // is_triangle_possible()
   // half_sum()
   // count_zeros()
-  count_mins()
+  // count_mins()
+  // digital_root()
+  largest_by_7()
 }
