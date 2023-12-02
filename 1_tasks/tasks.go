@@ -121,6 +121,73 @@ func largest_by_7() {
   }
 }
 
+func ten_korov() {
+  var n, k uint
+  fmt.Scan(&n)
+  k = n % 10
+  switch {
+  case k == 1 && n != 11:
+    fmt.Printf("%d korova", n)
+  case (k == 2 || k == 3 || k == 4) && (n < 5 || n > 21):
+    fmt.Printf("%d korovy", n)
+  default:
+    fmt.Printf("%d korov", n)
+  }
+}
+
+func squares_until() {
+  var i, lim uint
+  fmt.Scan(&lim)
+  for i = 1; ; i *= 2 {
+    if i > lim {
+      break
+    }
+    fmt.Printf("%d ", i)
+  }
+}
+
+func find_fibonacchi() {
+  var lim, i, a, b uint
+  fmt.Scan(&lim)
+  a = 0
+  b = 1
+  for i = 1; ; i++ {
+    a, b = b, a + b
+    // fmt.Println(i, a, b)
+    if a == lim {
+      fmt.Println(i)
+      break
+    }
+    if a > lim {
+      fmt.Println(-1)
+      break
+    }
+  }
+}
+
+func int_to_bin() {
+  var in uint
+  fmt.Scan(&in)
+  fmt.Printf("%b", in)
+}
+
+func del_digit() {
+  var n uint
+  var dig uint
+  fmt.Scan(&n, &dig)
+  var pow uint = 1
+  var res uint
+  for n > 0 {
+    d := n % 10
+    n = n / 10
+    if d != dig {
+      res += d * pow
+      pow *= 10
+    }
+  }
+  fmt.Println(res)
+}
+
 func main() {
   // sum_of_digits()
   // revers_num()
@@ -131,5 +198,10 @@ func main() {
   // count_zeros()
   // count_mins()
   // digital_root()
-  largest_by_7()
+  // largest_by_7()
+  // ten_korov()
+  // squares_until()
+  // find_fibonacchi()
+  // int_to_bin()
+  del_digit()
 }
