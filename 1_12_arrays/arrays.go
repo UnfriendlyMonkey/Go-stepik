@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"slices"
+)
 
 func first_arrays() {
   var numbers [5]int = [5]int{1, 2, 3, 4, 5}
@@ -78,6 +81,8 @@ func del_from_slice() {
   a = append(a[0:2], a[3:]...)  // unpacking of second slice
   fmt.Println(a)
   fmt.Printf("%p\n", a)  // the same pointer
+  a = slices.Delete(a, 1, 2)
+  fmt.Printf("%v\n", a)
 }
 
 func copy_slice() {
@@ -155,10 +160,10 @@ func main() {
   // two_vars()
   // arr_from_input()
   // base_slices()
-  // del_from_slice()
+  del_from_slice()
   // copy_slice()
   // print_fourth_el()
   // find_max_in_arr()
   // only_evens()
-  sum_of_positives()
+  // sum_of_positives()
 }
