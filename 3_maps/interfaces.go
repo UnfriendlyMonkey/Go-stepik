@@ -2,7 +2,13 @@ package main
 
 import (
 	// "errors"
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"io"
+	"log"
+	"os"
+	"strconv"
 	"strings"
 )
 
@@ -54,13 +60,91 @@ func (b Battery) String() string {
 	return res
 }
 
+type Book struct {
+	Title string
+	Author string
+	Year uint16
+}
+
+func (b Book) String() string {
+	return fmt.Sprintf("Book: %s - %s; %d", b.Title, b.Author, b.Year)
+}
+
+type Count int
+
+func (c Count) String() string {
+	return strconv.Itoa(int(c))
+}
+
+func WriteLog(s fmt.Stringer) {
+	log.Print(s.String())
+}
+
+func fromAlexedwards() {
+	book := Book{"HeadFirst Go", "Jay McGavren", 2019}
+	WriteLog(book)
+
+	count := Count(3)
+	WriteLog(count)
+}
+
+type Customer struct {
+	Name string
+	Age int
+}
+
+func (c *Customer) WriteJSON(w io.Writer) error {
+	js, err := json.Marshal(c)
+	if err != nil {return err}
+	_, err = w.Write(js)
+	return err
+}
+
+func fromAlexedwards2() {
+	c := &Customer{Name: "Alice", Age: 21}
+
+	// We can call the WriteJSON method using a buffer...
+	var buf bytes.Buffer
+	err := c.WriteJSON(&buf)
+	if err != nil {log.Fatal(err)}
+
+	// or using a file
+	f, err := os.Create("/tmp/customer")
+	if err != nil {log.Fatal(err)}
+	defer f.Close()
+	err = c.WriteJSON(f)
+	if err != nil {log.Fatal(err)}
+}
+
+func emptyInterfaceExample() {
+	person := make(map[string]interface{}, 0)
+
+	person["name"] = "Alice"
+	person["age"] = 21
+	person["height"] = 167.4
+
+	log.Printf("%+v", person)
+
+	// person["age"] = person["age"] + 1 // misamtched types interface{} and int
+
+	age, ok := person["age"].(int)
+	if !ok {log.Fatal("could not assert value to int"); return}
+	person["age"] = age + 1
+	log.Printf("%+v", person)
+}
+
 func main() {
 	// var value1, value2, operation interface{} = 10.5, 23.4, "+"
 	// value1, value2, operation := float64(10), bool(true), "o"
 	// value1, value2, operation := float64(10), float64(23.4), false
 	// calc(value1, value2, operation)
-	var report string
-	fmt.Scan(&report)
-	batteryForTest := Battery{report: report,}
-	fmt.Println(batteryForTest)
+
+	// var report string
+	// fmt.Scan(&report)
+	// batteryForTest := Battery{report: report,}
+	// fmt.Println(batteryForTest)
+
+	// fromAlexedwards()
+	// fromAlexedwards2()
+	emptyInterfaceExample()
 }
