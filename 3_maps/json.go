@@ -1,13 +1,11 @@
 package main
 
 import (
-	// "encoding/json"
 	"bufio"
 	"bytes"
 	"encoding/json"
 	"fmt"
 
-	// "io"
 	"log"
 	"os"
 )
@@ -141,10 +139,81 @@ func annotations() {
 	fmt.Print(dst) // would include all fields (even with annotations) except non-exported
 }
 
+type OcvedItem struct {
+	// SystemObjectID string `json:"system_object_id"`
+	// Kod string
+	// IsDeleted int `json:"is_deleted"`
+	// SignatureDate string `json:"signature_date"`
+	// Nomdescr string
+	GlobalID int `json:"global_id"`
+	// Idx string
+	// Razdel string
+	// Name string
+}
+
+func OCVED() {
+	var OcvedList = []OcvedItem{}
+	path := "/home/andrey/Downloads/data-20190514T0100.json"
+	// inFile, err := os.Open(path)
+	// if err != nil{log.Fatal(err)}
+	// buf := bufio.NewReader(inFile)
+	// content, err := buf.ReadBytes('\n')
+	// if err != nil {log.Fatal(err)}
+	// content := []byte{}
+	// inFile.Read(content)
+	content, err := os.ReadFile(path)
+	// fmt.Printf("%s\n", content[:100])
+	if err != nil{log.Fatal(err)}
+	errUnm := json.Unmarshal(content, &OcvedList)
+	if errUnm != nil{log.Fatal(errUnm)}
+	// fmt.Println(OcvedList[0])
+	// fmt.Printf("global_id: %d\n", OcvedList[1].GlobalID)
+	var sum int
+	for _, item := range OcvedList {
+		sum += item.GlobalID
+	}
+	fmt.Println(sum)
+}
+
+func OCVED2() {
+	path := "/home/andrey/Downloads/data-20190514T0100.json"
+	var items []struct {
+		ID uint64 `json:"global_id"`
+	}
+	file, _ := os.Open(path)
+	defer file.Close()
+	json.NewDecoder(file).Decode(&items)
+	var sum uint64
+	for _, item := range items {
+		sum += item.ID
+	}
+	fmt.Println(sum)
+}
+
+func OCVED3(path string) {
+	file, _ := os.Open(path)
+	defer file.Close()
+	decoder := json.NewDecoder(file)
+	tok, err := decoder.Token()
+	if err != nil{log.Fatal(err)}
+	fmt.Println(tok)
+	var item OcvedItem
+	var sum int
+	for decoder.More() {
+		err = decoder.Decode(&item)
+		if err != nil {continue}
+		sum += item.GlobalID
+	}
+	fmt.Println(sum)
+}
+
 func main() {
+	path := "/home/andrey/Downloads/data-20190514T0100.json"
 	// ExampleMarshal()
 	// ExampleUnmarshal()
 	// toAndFrom()
 	// findAverageMark()
-	annotations()
+	// annotations()
+	// OCVED()
+	OCVED3(path)
 }
