@@ -36,9 +36,13 @@ func parsingTime() {
 	fmt.Println(firstTime.Format(outFormat))
 
 	loc, err := time.LoadLocation("Asia/Yekaterinburg")
-	if err != nil {log.Fatal(err)}
+	if err != nil {
+		log.Fatal(err)
+	}
 	secondTime, err := time.ParseInLocation("Jan 2 06 03:04:05pm", "May 15 20 05:45:10pm", loc)
-	if err != nil {log.Fatal(err)}
+	if err != nil {
+		log.Fatal(err)
+	}
 	fmt.Println(secondTime, secondTime.Format(outFormat))
 
 	fmt.Println(secondTime.Month(), secondTime.YearDay(), secondTime.Weekday(), secondTime.Unix())
@@ -59,7 +63,9 @@ func convert() {
 	outFormat := "Mon Jan 02 15:04:05 -0700 2006"
 	// dt, err := time.Parse("2006-01-02T15:04:05-07:00", a)
 	dt, err := time.Parse(time.RFC3339, a)
-	if err != nil{fmt.Println(err)}
+	if err != nil {
+		fmt.Println(err)
+	}
 	// fmt.Println(dt)
 	fmt.Println(dt.Format(outFormat))
 	fmt.Println(dt.Format(time.UnixDate))
@@ -71,7 +77,9 @@ func reschedule() {
 	buf, _ := reader.ReadString('\n')
 	buf = strings.TrimRight(buf, "\n")
 	dt, err := time.Parse(time.DateTime, buf)
-	if err != nil{log.Fatal(err)}
+	if err != nil {
+		log.Fatal(err)
+	}
 	if dt.Hour() > 12 {
 		dt = dt.Add(time.Hour * 24)
 	}
@@ -85,7 +93,9 @@ func exampleDuration() {
 	fmt.Println(time.Since(past).Round(time.Second))
 	fmt.Println(time.Until(future).Round(time.Minute))
 	dur, err := time.ParseDuration("1h3m44s")
-	if err != nil{log.Fatal(err)}
+	if err != nil {
+		log.Fatal(err)
+	}
 	fmt.Println(dur.Round(time.Minute).Minutes())
 }
 
@@ -121,7 +131,9 @@ func timeAdding() {
 	inStr = strings.ReplaceAll(inStr, " ", "")
 	fmt.Println(inStr)
 	inDur, err := time.ParseDuration(inStr)
-	if err != nil {log.Fatal(err)}
+	if err != nil {
+		log.Fatal(err)
+	}
 	outTime := time.Unix(now, 0).Add(inDur).UTC()
 	// fmt.Println(time.Unix(now, 0))
 	// fmt.Println(time.Unix(now, 0).Add(inDur))
@@ -133,7 +145,7 @@ func timeAdding2() {
 	fmt.Scanf("%d мин. %d сек.", &min, &sec)
 	fmt.Println(min, sec)
 	// duration, err := time.ParseDuration(fmt.Sprintf("%sm%ss", min, sec))
-	outTimestamp := now + min * 60 + sec
+	outTimestamp := now + min*60 + sec
 	outTime := time.Unix(outTimestamp, 0).UTC()
 	fmt.Println(outTime.Format(time.UnixDate))
 }
